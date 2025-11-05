@@ -20,7 +20,7 @@ torch.onnx.export(
 )
 print(f"Exported base model: {onnx_path}")
 
-# 3. Quantize to int8 (dynamic range quantization)
+# 3. Quantize to int8
 quantized_path = "encoder_quant.onnx"
 quantize_dynamic(
     model_input=onnx_path,
