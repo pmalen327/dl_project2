@@ -4,9 +4,7 @@ import glob
 import os
 from models import Autoencoder
 
-# --------------------------
-# Setup & sanity check
-# --------------------------
+
 print("Current working directory:", os.getcwd())
 
 LOG_PATTERN = "latent_logs/*.npz"
@@ -17,9 +15,7 @@ if not files:
     print("No .npz files found. Make sure you copied them into latent_logs/")
     raise SystemExit
 
-# --------------------------
-# Load trained autoencoder
-# --------------------------
+
 LATENT_DIM = 64  # must match training + encoder.onnx
 model = Autoencoder(latent_dim=LATENT_DIM)
 model.load_state_dict(torch.load("autoencoder.pth", map_location="cpu"))
@@ -44,9 +40,7 @@ def reconstruction_loss(x_true, x_recon):
     loss = torch.nn.functional.smooth_l1_loss(x_recon_t, x_true_t)
     return float(loss)
 
-# --------------------------
-# Process each logged pair
-# --------------------------
+
 losses = []
 
 for path in files:
