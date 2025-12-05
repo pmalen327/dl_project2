@@ -5,9 +5,7 @@ from torch.utils.data import DataLoader, TensorDataset
 import numpy as np
 from models import Autoencoder
 
-# --------------------------
-# Load data
-# --------------------------
+
 X_train = np.load("data/processed/bearing_train.npy")
 X_test  = np.load("data/processed/bearing_test.npy")
 
@@ -22,9 +20,6 @@ def per_window_znorm(x):
 train_loader = DataLoader(TensorDataset(X_train), batch_size=128, shuffle=True, drop_last=False)
 test_loader  = DataLoader(TensorDataset(X_test),  batch_size=128, shuffle=False, drop_last=False)
 
-# --------------------------
-# Model / Optim / Loss
-# --------------------------
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = Autoencoder(latent_dim=64).to(device)
 optimizer = optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
@@ -34,9 +29,7 @@ scheduler = optim.lr_scheduler.ReduceLROnPlateau(
     optimizer, mode="min", factor=0.5, patience=5, min_lr=1e-5
 )
 
-# --------------------------
-# Training
-# --------------------------
+
 epochs = 50
 best_test = float("inf")
 
@@ -46,7 +39,7 @@ for epoch in range(1, epochs + 1):
     for (batch,) in train_loader:
         batch = batch.to(device)
         batch = per_window_znorm(batch)
-        noisy = batch + 0.02 * torch.randn_like(batch)  # moved here
+        noisy = batch + 0.02 * torch.randn_like(batch)
         optimizer.zero_grad()
         recon = model(noisy)
         loss = loss_fn(recon, batch)

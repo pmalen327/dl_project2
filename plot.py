@@ -8,7 +8,7 @@ import torch
 from models import Autoencoder
 
 LATENT_DIR = "latent_logs"
-LATENT_DIM = 64           # must match your trained model
+LATENT_DIM = 64
 
 
 def load_x_and_z(latent_dir=LATENT_DIR):
@@ -159,10 +159,8 @@ if __name__ == "__main__":
           f"min={losses.min():.6f}, "
           f"max={losses.max():.6f}")
 
-    # PCA 2D colored by reconstruction loss
     plot_pca_2d(Z, losses, save_path="latent_pca_loss.png")
 
-    # Per-dimension latent stats
     plot_latent_stats(Z, save_path="latent_stats.png")
 
     print("Done.")

@@ -12,7 +12,6 @@ class Autoencoder(nn.Module):
             nn.Conv1d(32, 64, 9, stride=2, padding=4), nn.BatchNorm1d(64), nn.ReLU()
         )
 
-        # Compute flattened dimension automatically
         with torch.no_grad():
             dummy = torch.zeros(1, 1, input_length)
             conv_out = self.encoder_convs(dummy)
@@ -44,7 +43,6 @@ class Autoencoder(nn.Module):
     def forward(self, x):
         z = self.encode(x)
         x_hat = self.decode(z)
-        # Trim/pad sequence dimension to match exactly
         if x_hat.size(-1) > x.size(-1):
             x_hat = x_hat[..., :x.size(-1)]
         elif x_hat.size(-1) < x.size(-1):

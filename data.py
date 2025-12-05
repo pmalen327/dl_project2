@@ -50,7 +50,6 @@ def preprocess_all():
     scaler = StandardScaler()
     X = scaler.fit_transform(X)
 
-    # Train/test split
     X_train, X_test = train_test_split(X, test_size=0.2, random_state=42, shuffle=True)
 
     np.save(PROC_DIR / "bearing_train.npy", X_train)
